@@ -1,0 +1,17 @@
+import xlrd  # 导入库
+# 打开文件
+xls = xlrd.open_workbook('iRPC chamber- covers 20°- 96 strip mapping draft.xls')
+# 查看所有sheet列表
+print('All sheets: %s' % xls.sheet_names())
+
+
+#插入excel数据
+sheet1 = xls.sheets()[0]    # 获得第1张sheet，索引从0开始
+sheet1_name = sheet1.name    # 获得名称
+sheet1_cols = sheet1.ncols   # 获得列数
+sheet1_nrows = sheet1.nrows  # 获得行数
+print('Sheet1 Name: %s\nSheet1 cols: %s\nSheet1 rows: %s' % (sheet1_name, sheet1_cols, sheet1_nrows))
+
+sheet1_cols1 = sheet1.col_values(1)[2:]   # 获得第1列数据的1-X行
+sheet1_cols5 = sheet1.col_values(5)[2:]#mean
+sheet1_cols6 = sheet1.col_values(6)[2:]#sigma
