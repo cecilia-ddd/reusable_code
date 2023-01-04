@@ -1,0 +1,43 @@
+
+x = [0,1,2,3,4,5]
+labels=["pure beam","beam+cosmic","beam+cos+0.7gama","beam+cos+1.2gama","beam+cos+1.8gama","beam+cos+2.3gama"]
+
+
+y=total_num_list_FPGA[1]
+plt.scatter(x,y,s=100,c = "red",marker="s",label="N strips with paired data")#"同一根条两端信号的BX差")
+plt.plot(x,y,"red",linewidth=n)
+
+    
+y = total_num_list_FPGA[2]
+plt.scatter(x,y,s=150,c = "magenta",marker="1",label="N strips with paired data of ev_BX±11 BX")#"限制同一根丝两端信号时间的BX与caliBX的差值在±11BX")
+plt.plot(x,y,"magenta",linewidth=n)
+
+    
+
+y = total_num_list_FPGA[3]
+plt.scatter(x,y,s=150,c = "yellowgreen",marker="^",label="N strips with paired data of ev_BX±2 BX")#"限制同一根丝两端信号时间的BX与caliBX的差值在±2BX")
+plt.plot(x,y,"yellowgreen",linewidth=n)
+
+    
+y = total_num_list_FPGA[4]
+plt.scatter(x,y,s=100,c = "slateblue",marker="D",label="N strips with paired data of ev_BX±1 BX")#"限制同一根丝两端信号时间的BX与caliBX的差值在±1BX")
+plt.plot(x,y,"slateblue",linewidth=n)
+
+    
+
+y = total_num_list_FPGA[5]
+plt.scatter(x,y,s=150,c = "black",marker="p",label="N strips with paired data of ev_BX±1 BX & on beam strips")
+plt.plot(x,y,"black",linewidth=n)
+
+y = total_num_list_FPGA[6]
+plt.scatter(x,y,s=150,c = "sandybrown",marker=11, label="N strips with paired data of ev_BX±1 BX & on beam strips & on R(0-150cm)")
+plt.plot(x,y,"sandybrown",linewidth=n)
+
+y = total_num_list_FPGA[7]
+plt.scatter(x,y,s=200,c = "plum",marker="*",label="N strips with paired data of ev_BX±1 BX & on beam strips & on beam R")
+plt.plot(x,y,"plum",linewidth=n)
+
+
+y = total_num_list_FPGA[8]
+plt.scatter(x,y,s=200,c = "steelblue",marker="P",label="N strips with paired data & on beam strips & on beam R")
+plt.plot(x,y,"steelblue",linewidth=n)
