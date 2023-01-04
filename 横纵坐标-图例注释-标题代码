@@ -5,6 +5,28 @@ information9 = "Count of paired data with window size and data on beam"
 plt.title(label=information9,loc="center",fontdict=font8,pad=50)
 ax = plt.gca()
 
+#文件信息
+font1 = {'family' : 'Calibri',
+    'weight' : 'normal',
+    'size'   : 26,
+    "style":"italic"
+    }
+ax.text(0.55,0.65,file_name[:6]+"_7100V"+"\n"+"Event count : "+"1200"+"\n"+"No gama background"+"\n"
+                +"beam trigger"+"\n",\
+                font1,transform = ax.transAxes, )
+
+#实验地点
+font6 = {'family' : 'Calibri',
+'weight' : 'bold',
+'size'   : 36,
+}
+
+font7 = {'family' : 'Calibri',
+'weight' : 'normal',
+'size'   : 36,
+"style":"italic"
+} 
+
 #图注
 information0="CMS MUON"
 information2="Preliminary"
