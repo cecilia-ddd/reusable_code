@@ -15,3 +15,51 @@ print('Sheet1 Name: %s\nSheet1 cols: %s\nSheet1 rows: %s' % (sheet1_name, sheet1
 sheet1_cols1 = sheet1.col_values(1)[2:]   # 获得第1列数据的1-X行
 sheet1_cols5 = sheet1.col_values(5)[2:]#mean
 sheet1_cols6 = sheet1.col_values(6)[2:]#sigma
+
+
+#第一种办法  写
+Eff_list =  [0.013, 0.026, 0.049, 0.174, 0.367, 0.634, 0.807, 0.923, 0.964, 0.98, 0.985, 0.991]
+Error_bar = 0.003
+a = Error_bar**2
+total_event_cnt_list = []
+for Eff in Eff_list:
+    total_event_cnt = Eff*(1-Eff)/(a)
+    print(int(total_event_cnt))
+    total_event_cnt_list.append(int(total_event_cnt))
+    
+import xlwt
+import xlrd
+from xlutils.copy import copy
+def write_file(list_ : list):
+#     book = xlwt.Workbook(encoding='utf-8') #创建Workbook，相当于创建Excel
+
+#     # 创建sheet，Sheet1为表的名字，cell_overwrite_ok为是否覆盖单元格
+#     sheet1 = book.add_sheet(u'Sheet1', cell_overwrite_ok=True)
+    
+    xls = xlrd.open_workbook('write.xls')
+    xls_copy = copy(xls)
+    sheet1 = xls_copy.get_sheet("Sheet1")
+    n = 1
+    HV_value = 6300
+    for item in list_:        
+        print(n)
+        item_str = str(item)
+        sheet1.write(0, n+1, "HV%d - %d" %(n,HV_value)) 
+#         sheet1.write(1, n, item_str)  #第0行第0列
+        xls_copy.save('write.xls')
+        n = n+1
+        HV_value = HV_value+100
+z = write_file(total_event_cnt_list)
+
+
+第二种办法 写(这个写会把文件重新清空，上面的那个不会)
+import xlwt
+def write_file():
+    book = xlwt.Workbook(encoding='utf-8') #创建Workbook，相当于创建Excel
+
+    # 创建sheet，Sheet1为表的名字，cell_overwrite_ok为是否覆盖单元格
+    sheet1 = book.add_sheet(u'Sheet1', cell_overwrite_ok=True)
+    
+    #向表中添加数据
+    sheet1.write(0, 0, 'Englishname')  #第0行第0列
+    book.save('write.xls')
