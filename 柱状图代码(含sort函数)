@@ -39,7 +39,8 @@ font3 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   : 40,
 } 
-
+self_xlabel = "TDC data num of one event"
+self_ylabel = 'Count'#定义y轴
 
 plt.xlabel(self_xlabel,horizontalalignment='right',x=1.0,fontdict=font0)
 plt.ylabel(self_ylabel,horizontalalignment='left',y=0.85,fontdict=font0)
