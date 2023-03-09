@@ -1,4 +1,8 @@
 #标题
+font8 = {'family' : 'Calibri',
+    'weight' : 'normal',
+    'size'   : 30,
+    } 
 # information9 = "Count of paired data beyond delay window size"
 # information9 = "Count of paired data with window size"
 information9 = "Count of paired data with window size and data on beam"
