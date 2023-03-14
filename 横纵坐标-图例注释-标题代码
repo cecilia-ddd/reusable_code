@@ -1,10 +1,9 @@
 #标题
 font8 = {'family' : 'Calibri',
     'weight' : 'normal',
-    'size'   : 30,
+    'size'   : 33,
     } 
-# information9 = "Count of paired data beyond delay window size"
-# information9 = "Count of paired data with window size"
+
 information9 = "Count of paired data with window size and data on beam"
 plt.title(label=information9,loc="center",fontdict=font8,pad=50)
 ax = plt.gca()
