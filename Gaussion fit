@@ -1,0 +1,7 @@
+from scipy.stats import norm
+# strip_time_differ_optmized 是一个列表，未经排序筛选之前的所有数据列表
+gauss_fit_mu, gauss_fit_sigma= norm.fit(strip_time_differ_optmized) 
+# xrange需要自己设置
+xrange = np.arange(time_negative_cut,time_positive_cut,0.01)
+p = norm.pdf(xrange, gauss_fit_mu, gauss_fit_sigma)*0.1
+plt.plot(xrange, p, 'r--', label='Noise removed(3σ)',linewidth=4) 
