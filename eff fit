@@ -1,0 +1,312 @@
+import numpy as np
+import matplotlib
+from scipy.optimize import curve_fit#use cure_fit to fit S curve
+import matplotlib.mlab as mlab
+from scipy.stats import norm
+import pandas as pd
+import math
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter
+
+
+
+eff_final_63= [0.005, 0.007, 0.029, 0.086, 0.19, 0.351, 0.533, 0.696, 0.794, 0.846, 0.9, 0.893]
+eff_final_36= [0.005, 0.007, 0.025, 0.084, 0.186, 0.351, 0.53, 0.696, 0.79, 0.841, 0.896, 0.894]
+eff_final_24= [0.004, 0.006, 0.022, 0.08, 0.186, 0.346, 0.527, 0.696, 0.79, 0.839, 0.883, 0.878]
+eff_final_18= [0.003, 0.006, 0.022, 0.08, 0.189, 0.345, 0.529, 0.687, 0.786, 0.833, 0.869, 0.854]
+eff_final_12= [0.003, 0.006, 0.022, 0.075, 0.186, 0.343, 0.524, 0.68, 0.774, 0.818, 0.834, 0.809]
+
+
+
+# label_63="plateau[%%] = %d, WP = %0.2f kV, No bkg source, RxLW = 63 BX, Eff(WP)[%%] = %d"
+# label_36="plateau[%%] = %d, WP = %0.2f kV, No bkg source, RxLW = 36 BX, Eff(WP)[%%] = %d"
+# label_24="plateau[%%] = %d, WP = %0.2f kV, No bkg source, RxLW = 24 BX, Eff(WP)[%%] = %d" 
+# label_18="plateau[%%] = %d, WP = %0.2f kV, No bkg source, RxLW = 18 BX, Eff(WP)[%%] = %d" 
+# label_12="plateau[%%] = %d, WP = %0.2f kV, No bkg source, RxLW = 12 BX, Eff(WP)[%%] = %d"
+# label_63="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 2.7 kHz/$cm^{2}$, RxLW = 63 BX, Eff(WP)[%%] = %d" 
+# label_36="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 2.7 kHz/$cm^{2}$, RxLW = 36 BX, Eff(WP)[%%] = %d" 
+# label_24="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 2.7 kHz/$cm^{2}$, RxLW = 24 BX, Eff(WP)[%%] = %d" 
+# label_18="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 2.7 kHz/$cm^{2}$, RxLW = 18 BX, Eff(WP)[%%] = %d" 
+# label_12="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 2.7 kHz/$cm^{2}$, RxLW = 12 BX, Eff(WP)[%%] = %d"
+# label_63="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.8 kHz/$cm^{2}$, RxLW = 63 BX, Eff(WP)[%%] = %d"
+# label_36="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.8 kHz/$cm^{2}$, RxLW = 36 BX, Eff(WP)[%%] = %d" 
+# label_24="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.8 kHz/$cm^{2}$, RxLW = 24 BX, Eff(WP)[%%] = %d" 
+# label_18="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.8 kHz/$cm^{2}$, RxLW = 18 BX, Eff(WP)[%%] = %d" 
+# label_12="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.8 kHz/$cm^{2}$, RxLW = 12 BX, Eff(WP)[%%] = %d"
+label_63="RxLW = 63 BX, plateau[%%] = %d, WP = %0.2f kV, Eff(WP)[%%] = %d"
+label_36="RxLW = 36 BX, plateau[%%] = %d, WP = %0.2f kV, Eff(WP)[%%] = %d" 
+label_24="RxLW = 24 BX, plateau[%%] = %d, WP = %0.2f kV, Eff(WP)[%%] = %d" 
+label_18="RxLW = 18 BX, plateau[%%] = %d, WP = %0.2f kV, Eff(WP)[%%] = %d" 
+label_12="RxLW = 12 BX, plateau[%%] = %d, WP = %0.2f kV, Eff(WP)[%%] = %d"
+# label_63="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.2 kHz/$cm^{2}$, RxLW = 63 BX, Eff(WP)[%%] = %d"
+# label_36="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.2 kHz/$cm^{2}$, RxLW = 36 BX, Eff(WP)[%%] = %d"
+# label_24="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.2 kHz/$cm^{2}$, RxLW = 24 BX, Eff(WP)[%%] = %d" 
+# label_18="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.2 kHz/$cm^{2}$, RxLW = 18 BX, Eff(WP)[%%] = %d" 
+# label_12="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.2 kHz/$cm^{2}$, RxLW = 12 BX, Eff(WP)[%%] = %d"
+
+
+
+#data
+n=2
+
+HV_lis1 = [6300,6400,6500,6600,6700,6800,6900,7000,7100,7200,7300,7400]
+HV_lis2 = [6.30,6.4,6.5,6.6,6.7,6.8,6.9,7.0,7.1,7.2,7.3,7.4]
+
+#draw picture
+figsize = 12,12
+figure, ax = plt.subplots(figsize=figsize)
+font0 = {'family' : 'Cabrili',
+'weight' : 'bold',
+'size'   : 20,
+'color':'black'
+}
+font1 = {'family' : 'Cabrili',
+'weight' : 'normal',
+'size'   : 20,
+'color':'red'
+}
+font2 = {'family' : 'Cabrili',
+'weight' : 'normal',
+'size'   : 20,
+'color':'green'
+}
+font4 = {'family' : 'Cabrili',
+'weight' : 'normal',
+'size'   : 20,
+'color':'blue'
+}
+#axes title
+plt.xlabel('$\mathregular{HV_{eff}}$ [kV]',horizontalalignment='right',x=0.98,fontdict=font0)
+plt.ylabel('Muon Efficiency [%]',horizontalalignment='left',y=0.65,fontdict=font0)
+
+
+xmajorLocator = MultipleLocator(0.2)
+ax.xaxis.set_major_locator(xmajorLocator)
+ymajorLocator = MultipleLocator(20)  
+ax.yaxis.set_major_locator(ymajorLocator)
+xminorLocator = MultipleLocator(0.05)
+ax.xaxis.set_minor_locator(xminorLocator)
+yminorLocator = MultipleLocator(5)
+ax.yaxis.set_minor_locator(yminorLocator)
+ax.tick_params(which='major',direction='in',length=18,width=2.0,labelsize=24)
+ax.tick_params(which='minor',direction='in',length=8,width=2.0)
+plt.yticks(fontproperties='Cabrili', size=20,weight='bold')#设置大小及加粗
+plt.xticks(fontproperties='Cabrili', size=20,weight='bold')#设置大小及加粗
+# labels = ax.get_xticklabels() + ax.get_yticklabels()
+# [label.set_fontname('Cabrili') for label in labels]
+plt.xlim(5.95,7.45)
+plt.ylim(0,125)
+
+#63 
+x0 = HV_lis1
+
+y0 = eff_final_63 
+y10=[item*100 for item in y0]
+def func1(x0,E1,L1,H1):
+    return E1/(1+np.exp(L1*(H1-x0)))
+
+param_bounds=([0,-np.inf,-np.inf],[1.00,np.inf,np.inf])
+popt1,pcov1=curve_fit(func1,x0,y0,[0.98,0.01,7000],bounds=param_bounds) 
+
+E1 = popt1[0]
+L1 = popt1[1]
+H1 = popt1[2]
+knee1 = H1 - (math.log(1/0.95-1))/L1
+WP1 = knee1  +120
+eff1 = func1(WP1,E1,L1,H1)
+
+# print(popt1)
+a=round(E1*100)
+b=WP1/1000
+c=round(eff1*100)
+plt.scatter(HV_lis2,y10,s=150,c = "green",marker="D",label=label_63 %(a,b,c))
+
+x1 = np.linspace(6200, 7400, 100)
+y1 = func1(x1,E1,L1,H1)
+y11=[item*100 for item in y1]
+x11=[item/1000 for item in x1]
+plt.plot(x11,y11,"green",linewidth=n)
+
+
+
+#36 
+x0 = HV_lis1
+
+y0 = eff_final_36
+y10=[item*100 for item in y0]
+def func1(x0,E1,L1,H1):
+    return E1/(1+np.exp(L1*(H1-x0)))
+
+param_bounds=([0,-np.inf,-np.inf],[1.00,np.inf,np.inf])
+popt1,pcov1=curve_fit(func1,x0,y0,[0.98,0.01,7000],bounds=param_bounds) 
+
+E1 = popt1[0]
+L1 = popt1[1]
+H1 = popt1[2]
+knee1 = H1 - (math.log(1/0.95-1))/L1
+WP1 = knee1  +120
+eff1 = func1(WP1,E1,L1,H1)
+
+# print(popt1)
+a=round(E1*100)
+b=WP1/1000
+c=round(eff1*100)
+plt.scatter(HV_lis2,y10,s=200,c = "black",marker="h",label=label_36 %(a,b,c))
+
+x1 = np.linspace(6200, 7400, 100)
+y1 = func1(x1,E1,L1,H1)
+y11=[item*100 for item in y1]
+x11=[item/1000 for item in x1]
+plt.plot(x11,y11,"black",linewidth=n)
+
+
+#24 
+x2 = HV_lis1
+
+y2 = eff_final_24 
+y4=[item*100 for item in y2]
+def func1(x2,E1,L1,H1):
+    return E1/(1+np.exp(L1*(H1-x2)))
+
+param_bounds=([0,-np.inf,-np.inf],[1.00,np.inf,np.inf])
+popt1,pcov1=curve_fit(func1,x2,y2,[0.98,0.01,7000],bounds=param_bounds) 
+
+E1 = popt1[0]
+L1 = popt1[1]
+H1 = popt1[2]
+knee1 = H1 - (math.log(1/0.95-1))/L1
+WP1 = knee1  +120
+eff1 = func1(WP1,E1,L1,H1)
+
+# print(popt1)
+a=round(E1*100)
+b=WP1/1000
+c=round(eff1*100)
+plt.scatter(HV_lis2,y4,s=150,c = "magenta",marker="^",label=label_24 %(a,b,c))
+
+x3 = np.linspace(6200, 7400, 100)
+y3 = func1(x3,E1,L1,H1)
+y5=[item*100 for item in y3]
+x5=[item/1000 for item in x3]
+plt.plot(x5,y5,"magenta",linewidth=n)
+
+# # 18
+
+x7 = HV_lis1
+y7 = eff_final_18
+y9=[item*100 for item in y7]
+
+def func7(x7,E7,L7,H7):
+    return E7/(1+np.exp(L7*(H7-x7)))
+#定义好自己需要的函数之后就是拟合
+#popt是一个一维数组，表示得到的拟合方程的参数
+#pcov是一个二维数组，是在popt参数下得到的协方差
+param_bounds=([0,-np.inf,-np.inf],[1.000,np.inf,np.inf])#设定参数1，2，3的下界和上界。其中参数1为0到1，剩下两个参数是负无穷到正无穷
+popt,pcov=curve_fit(func7,x7,y7,[0.98,0.01,7000],bounds=param_bounds) #后面这个数组是进行设置初猜，
+# popt,pcov=curve_fit(func,x5,y5,[0.98,0.01,7000]) #后面这个数组是进行设置初猜，
+# 即使初猜设置的不是特别好，也能拟合出来比较理想的效果。如果你不设置初猜的话，默认的都是1
+E7 = popt[0]
+L7= popt[1]
+H7 = popt[2]
+knee7 = H7 - (math.log(1/0.95-1))/L7
+WP7 = H7 - (math.log(1/0.95-1))/L7  +120
+eff7 = func7(WP7,E7,L7,H7)
+
+a=round(E7*100)
+b=WP7/1000
+c=round(eff7*100)
+
+plt.scatter(HV_lis2,y9,s=250,c = "blue",marker="*",label=label_18 %(a,b,c))
+
+#曲线图
+x8 = np.linspace(6200, 7400, 100)
+y8 = func7(x8,E7,L7,H7)
+y10=[item*100 for item in y8]
+x10=[item/1000 for item in x8]
+plt.plot(x10,y10,"blue",linewidth=n)
+
+font8 = {'family' : 'Cabrili',
+'weight' : 'normal',
+'size'   : 20,
+'color':'black'
+}
+# #12
+x8 = HV_lis1
+y8 = eff_final_12
+y10=[item*100 for item in y8]
+# error_bar8=[0.003967870965643918, 0.006046155803483731, 
+#             0.008676174272108648, 0.011737759581794134, 0.015197236590906913, 
+#             0.015597307459943206, 0.012480024038438387, 
+#             0.009228434320078352, 0.008529888627643386, 
+#             0.009272270487857868, 0.011229247525992114]
+
+def func8(x8,E,L,H):
+    return E/(1+np.exp(L*(H-x8)))
+
+param_bounds=([0,-np.inf,-np.inf],[1.00,np.inf,np.inf])
+popt1,pcov1=curve_fit(func8,x8,y8,[0.98,0.01,7000],bounds=param_bounds,method="dogbox") 
+
+E8 = popt1[0]
+L8 = popt1[1]
+H8 = popt1[2]
+knee8 = H8 - (math.log(1/0.95-1))/L8
+WP8 = knee8  +120
+eff8 = func8(WP8,E8,L8,H8)
+
+a=round(E8*100)
+b=WP8/1000
+c=round(eff8*100)
+plt.scatter(HV_lis2,y10,s=100,c = "red",marker="s",label=label_12 %(a,b,c))
+
+x9 = np.linspace(6200, 7400, 100)
+y9 = func8(x9,E8,L8,H8)
+x11=[item/1000 for item in x9]
+y11=[item*100 for item in y9]
+plt.plot(x11,y11,"red",linewidth=n)
+font3 = {'family' : 'Cabrili',
+'weight' : 'normal',
+'size'   :18,
+# 'color':'r'
+}
+information4="Test Beam in Oct. 2022"
+information5="1.4 mm double gap iRPC"
+# information6="γ bkg rate(WP) : No bkg"
+information6="γ bkg rate(WP) = 2.3 kHz/$cm^{2}$"
+information7="FEB v2.2 firmware v2.0 -- BEB"
+plt.text(6.8,30,information4,font3)
+plt.text(6.8,25,information5,font3)
+plt.text(6.8,20,information6,font3)
+plt.text(6.8,15,information7,font3)
+font5 = {'family' : 'Cabrili',
+'weight' : 'normal',
+'size'   :15,
+# 'color':'r'
+}
+font6 = {'family' : 'Cabrili',
+'weight' : 'bold',
+'size'   :28,
+# 'color':'r'
+}
+font7 = {'family' : 'Cabrili',
+'weight' : 'normal',
+'size'   :28,
+'style':'italic'
+}
+# information0="Run490"
+# plt.text(7200, 1.1,information0,font6)
+# information1="muon window refer to lyon's method"
+# plt.text(6700, 1.2,information1,font7)
+ylim_max=126
+information0="CMS MUON"
+information2="Preliminary"
+# information2="Work in Progress"
+information3="GIF++"
+plt.text(5.960, ylim_max+0.01,information0,font6)
+plt.text(6.380, ylim_max+0.01,information2,font7)
+plt.text(7.2, ylim_max+0.01,information3,font6)
+
+plt.plot([5.950,7.450],[100,100],linestyle=":", color="black")
+plt.legend(loc='upper left',prop=font5,frameon=False)
+plt.savefig("HV_Eff_final(2.3KHz).png" ,dpi=200)
+plt.show()
