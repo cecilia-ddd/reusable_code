@@ -46,6 +46,12 @@ label_12="RxLW = 12 BX, plateau[%%] = %d, WP = %0.2f kV, Eff(WP)[%%] = %d"
 # label_12="plateau[%%] = %d, WP = %0.2f kV, γ bkg rate(WP) = 1.2 kHz/$cm^{2}$, RxLW = 12 BX, Eff(WP)[%%] = %d"
 
 
+z1 = 12
+z2 = 10
+z3 = 10
+z4 = 10
+z5 = 10
+
 
 #data
 n=2
@@ -56,22 +62,22 @@ HV_lis2 = [6.30,6.4,6.5,6.6,6.7,6.8,6.9,7.0,7.1,7.2,7.3,7.4]
 #draw picture
 figsize = 12,12
 figure, ax = plt.subplots(figsize=figsize)
-font0 = {'family' : 'Cabrili',
+font0 = {'family' : 'Calibri',
 'weight' : 'bold',
 'size'   : 20,
 'color':'black'
 }
-font1 = {'family' : 'Cabrili',
+font1 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   : 20,
 'color':'red'
 }
-font2 = {'family' : 'Cabrili',
+font2 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   : 20,
 'color':'green'
 }
-font4 = {'family' : 'Cabrili',
+font4 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   : 20,
 'color':'blue'
@@ -91,17 +97,17 @@ yminorLocator = MultipleLocator(5)
 ax.yaxis.set_minor_locator(yminorLocator)
 ax.tick_params(which='major',direction='in',length=18,width=2.0,labelsize=24)
 ax.tick_params(which='minor',direction='in',length=8,width=2.0)
-plt.yticks(fontproperties='Cabrili', size=20,weight='bold')#设置大小及加粗
-plt.xticks(fontproperties='Cabrili', size=20,weight='bold')#设置大小及加粗
+plt.yticks(fontproperties='Calibri', size=20,weight='bold')#设置大小及加粗
+plt.xticks(fontproperties='Calibri', size=20,weight='bold')#设置大小及加粗
 # labels = ax.get_xticklabels() + ax.get_yticklabels()
-# [label.set_fontname('Cabrili') for label in labels]
+# [label.set_fontname('Calibri') for label in labels]
 plt.xlim(5.95,7.45)
 plt.ylim(0,125)
 
 #63 
-x0 = HV_lis1
+x0 = HV_lis1[:z1]
 
-y0 = eff_final_63 
+y0 = eff_final_63[:z1]
 y10=[item*100 for item in y0]
 def func1(x0,E1,L1,H1):
     return E1/(1+np.exp(L1*(H1-x0)))
@@ -131,9 +137,9 @@ plt.plot(x11,y11,"green",linewidth=n)
 
 
 #36 
-x0 = HV_lis1
+x0 = HV_lis1[:z2]
 
-y0 = eff_final_36
+y0 = eff_final_36[:z2]
 y10=[item*100 for item in y0]
 def func1(x0,E1,L1,H1):
     return E1/(1+np.exp(L1*(H1-x0)))
@@ -152,6 +158,8 @@ eff1 = func1(WP1,E1,L1,H1)
 a=round(E1*100)
 b=WP1/1000
 c=round(eff1*100)
+y0 = eff_final_36
+y10=[item*100 for item in y0]
 plt.scatter(HV_lis2,y10,s=200,c = "black",marker="h",label=label_36 %(a,b,c))
 
 x1 = np.linspace(6200, 7400, 100)
@@ -162,9 +170,9 @@ plt.plot(x11,y11,"black",linewidth=n)
 
 
 #24 
-x2 = HV_lis1
+x2 = HV_lis1[:z3]
 
-y2 = eff_final_24 
+y2 = eff_final_24[:z3]
 y4=[item*100 for item in y2]
 def func1(x2,E1,L1,H1):
     return E1/(1+np.exp(L1*(H1-x2)))
@@ -183,6 +191,8 @@ eff1 = func1(WP1,E1,L1,H1)
 a=round(E1*100)
 b=WP1/1000
 c=round(eff1*100)
+y2 = eff_final_24
+y4=[item*100 for item in y2]
 plt.scatter(HV_lis2,y4,s=150,c = "magenta",marker="^",label=label_24 %(a,b,c))
 
 x3 = np.linspace(6200, 7400, 100)
@@ -193,8 +203,8 @@ plt.plot(x5,y5,"magenta",linewidth=n)
 
 # # 18
 
-x7 = HV_lis1
-y7 = eff_final_18
+x7 = HV_lis1[:z4]
+y7 = eff_final_18[:z4]
 y9=[item*100 for item in y7]
 
 def func7(x7,E7,L7,H7):
@@ -216,7 +226,8 @@ eff7 = func7(WP7,E7,L7,H7)
 a=round(E7*100)
 b=WP7/1000
 c=round(eff7*100)
-
+y7 = eff_final_18
+y9=[item*100 for item in y7]
 plt.scatter(HV_lis2,y9,s=250,c = "blue",marker="*",label=label_18 %(a,b,c))
 
 #曲线图
@@ -226,15 +237,15 @@ y10=[item*100 for item in y8]
 x10=[item/1000 for item in x8]
 plt.plot(x10,y10,"blue",linewidth=n)
 
-font8 = {'family' : 'Cabrili',
+font8 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   : 20,
 'color':'black'
 }
 # #12
-x8 = HV_lis1
-y8 = eff_final_12
-y10=[item*100 for item in y8]
+x8 = HV_lis1[:z5]
+y8 = eff_final_12[:z5]
+
 # error_bar8=[0.003967870965643918, 0.006046155803483731, 
 #             0.008676174272108648, 0.011737759581794134, 0.015197236590906913, 
 #             0.015597307459943206, 0.012480024038438387, 
@@ -257,6 +268,8 @@ eff8 = func8(WP8,E8,L8,H8)
 a=round(E8*100)
 b=WP8/1000
 c=round(eff8*100)
+y8 = eff_final_12
+y10=[item*100 for item in y8]
 plt.scatter(HV_lis2,y10,s=100,c = "red",marker="s",label=label_12 %(a,b,c))
 
 x9 = np.linspace(6200, 7400, 100)
@@ -264,31 +277,31 @@ y9 = func8(x9,E8,L8,H8)
 x11=[item/1000 for item in x9]
 y11=[item*100 for item in y9]
 plt.plot(x11,y11,"red",linewidth=n)
-font3 = {'family' : 'Cabrili',
+font3 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   :18,
 # 'color':'r'
 }
 information4="Test Beam in Oct. 2022"
 information5="1.4 mm double gap iRPC"
-# information6="γ bkg rate(WP) : No bkg"
-information6="γ bkg rate(WP) = 2.3 kHz/$cm^{2}$"
+information6="γ bkg rate(WP) : No bkg"
+# information6="γ bkg rate(WP) = 2.3 kHz/$cm^{2}$"
 information7="FEB v2.2 firmware v2.0 -- BEB"
 plt.text(6.8,30,information4,font3)
 plt.text(6.8,25,information5,font3)
 plt.text(6.8,20,information6,font3)
 plt.text(6.8,15,information7,font3)
-font5 = {'family' : 'Cabrili',
+font5 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   :15,
 # 'color':'r'
 }
-font6 = {'family' : 'Cabrili',
+font6 = {'family' : 'Calibri',
 'weight' : 'bold',
 'size'   :28,
 # 'color':'r'
 }
-font7 = {'family' : 'Cabrili',
+font7 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   :28,
 'style':'italic'
@@ -303,10 +316,23 @@ information2="Preliminary"
 # information2="Work in Progress"
 information3="GIF++"
 plt.text(5.960, ylim_max+0.01,information0,font6)
-plt.text(6.380, ylim_max+0.01,information2,font7)
-plt.text(7.2, ylim_max+0.01,information3,font6)
+plt.text(6.3, ylim_max+0.01,information2,font7)
+plt.text(7.3, ylim_max+0.01,information3,font6)
 
 plt.plot([5.950,7.450],[100,100],linestyle=":", color="black")
 plt.legend(loc='upper left',prop=font5,frameon=False)
-plt.savefig("HV_Eff_final(2.3KHz).png" ,dpi=200)
+plt.savefig("HV_Eff_final(0.0KHz).png" ,dpi=200)
 plt.show()
+
+####
+information4="Cosmic test"
+information5="1.4 mm double gap iRPC"
+# information6="γ bkg rate(WP) : No bkg"
+# information6="γ bkg rate(WP) : 2.3 kHz/$cm^{2}$"
+information7="FEB v2.2 firmware v3.6 -- BEB"
+plt.text(6.8,30,information4,font3)
+plt.text(6.8,25,information5,font3)
+plt.text(6.8,20,information7,font3)
+# plt.text(6.8,15,information7,font3)
+
+
