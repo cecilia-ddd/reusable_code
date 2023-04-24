@@ -1,0 +1,140 @@
+%matplotlib notebook
+run_list = [582,583,585,586,590]
+for num in run_list:
+    file_name = Find_in_dir("./",num)
+    print("-----------------------------------")
+    print(file_name)
+    
+    total_event = 1000
+    event_list = []
+    BEE_analysis.gothroughfile(file_name,event_list,total_event)
+    for item in event_list:
+        item.run_all()
+
+
+    strip = [[] for i in range(30)]
+    #先统计有哪几种coarse time,1/2/3/.../15
+    coarse_time_len = []
+    for item in event_list:
+        coarse_time_list = []
+        coarse_time_list_0 = []
+        for i in range(len(item.Channel_tdc_info)):
+            if item.Channel_tdc_info[i] != []:
+                for it in item.Channel_tdc_info[i]:
+                    coarse_time_list.append(int(it/25))
+        coarse_time_list_0 = list(set(coarse_time_list))
+        coarse_time_len.append(len(coarse_time_list_0))
+    coarse_time_len_ele = list(set(coarse_time_len))
+    coarse_time_len_ele.sort()
+    # print(coarse_time_len_ele)
+
+
+    for item in event_list:
+        strip1_list = []
+        strip1_list_0 = []   
+        for i in range(len(item.Channel_tdc_info)):
+            if item.Channel_tdc_info[i] != []:
+                for it in item.Channel_tdc_info[i]:
+                    strip1_list.append(int(it/25))
+        strip1_list_0 = list(set(strip1_list))
+    #     for i in range(len(coarse_time_len_ele)):
+#         if len(strip1_list_0) in coarse_time_len_ele:
+        index = len(strip1_list_0) 
+        for j in range(len(item.Strip_hit_nums)):
+            if item.Strip_hit_nums[j] != 0:
+                strip[index].append(j)
+    # print(strip[0])
+    diff_coarse_time = []
+    strip_list = []
+    x_s1 = []
+    for i in range(len(strip)):
+        if strip[i] != []:
+            strip_list = strip_list + strip[i]
+            strip_list.sort()
+#             len0 = int(0.01*len(strip[i]))
+#             for j in range(len0):
+#                 x_s1.append(i)
+    strip_list_copy = strip_list.copy()
+    strip_list_ele = list(set(strip_list_copy))
+    strip_list_ele.sort()
+
+#     count = [[0 for col in range(len(strip_list_ele))]for row in range(len(coarse_time_len_ele))]
+#     count = [[0 for col in range(len(strip_list_ele))]for row in range(len(x_s1))]
+    count = []
+    for i in range(len(coarse_time_len_ele)):
+        x_index = coarse_time_len_ele[i]
+#         x_index = x_s1[i]
+        strip_x_index_counter = Counter(strip[x_index])
+        for j in range(len(strip_list_ele)):
+            ele = strip_list_ele[j]
+            count.append(strip_x_index_counter[ele])
+#     for j in range(len(strip_list_ele)):
+#         for i in range(len(coarse_time_len_ele)):
+#             x_index = coarse_time_len_ele[i]
+#             strip_x_index_counter = Counter(strip[x_index])
+#             ele = strip_list_ele[j]
+#             count.append(strip_x_index_counter[ele])
+#             count[i][j] = strip_x_index_counter[ele]/len(strip_list)
+    # print(coarse_time_len_ele)
+#     print(strip_list_ele)
+#     print(count)
+#     print(len(strip_list_ele))
+#     print(len(count))
+
+    x_s1 = np.array(strip_list_ele)
+    x_s2 = np.array(coarse_time_len_ele)
+#     x_s1 = np.array(x_s1)
+    G_0_array = np.array(count)
+    top = G_0_array
+    
+    # 绘图相关设置
+    fig = plt.figure(figsize=(16,9))
+    ax = plt.axes(projection='3d')
+    #   ax = Axes3D(fig)  无法使用，用以下两行代替
+#     ax = Axes3D(fig,auto_add_to_figure=False)
+#     fig.add_axes(ax)
+
+#     fig = plt.figure(figsize=(8, 3))
+#     ax1 = fig.add_subplot(121, projection='3d')
+#     ax2 = fig.add_subplot(122, projection='3d')
+
+    #生成网格
+    
+    x_s1, x_s2 = np.meshgrid(x_s1, x_s2)
+    x, y = x_s1.ravel(), x_s2.ravel()
+#     print(x)
+#     print(y)
+    width = depth = 1
+#     top = x + y
+    bottom = np.zeros_like(top)
+# #     ax.plot_surface(x_s1, x_s2, G_0_array, cmap='rainbow')
+    ax.bar3d(x, y, bottom, width, depth, top, shade=True)
+#     surf = ax.plot_surface(x, y, G_0_array, rstride=1, cstride=1, alpha = 0.9,cmap='rainbow')
+#     fig.colorbar(surf, shrink=0.5, aspect=5)
+    #字体
+    font0 = {'family' : 'Calibri',
+        'weight' : 'normal',
+        'size'   :16,
+        'style':'italic'
+    }
+    font1 = {'family' : 'Calibri',
+            'weight' : 'normal',
+            'size'   : 20,
+    #         "style":"italic"
+            }
+    #标题
+    ax.set_title("Distribution of hit strips vs different coarse time(BX) in one event",fontdict=font1)
+    # 设置坐标轴
+    ax.set(xlim=[0, 50], ylim=[0, 30])
+    ax.set_xlabel('Strip number',color='b',fontdict=font0)
+    ax.set_ylabel('Number of diff coarse time(BX) in one event',color='g',fontdict=font0)
+    ax.set_zlabel('Count',color='r',fontdict=font0)
+    # plt.yticks(fontproperties='Calibri', size=18,weight='normal')#设置大小及加粗
+    # plt.xticks(fontproperties='Calibri', size=18,weight='normal')#设置大小及加粗
+    #设置坐标内信息
+    # ax.text(0.75,0.75,file_name[2:8]+"_7100V"+"\n"+"Event count : "+"1000"+"\n"+"beam + cosmic"+"\n" 
+    #                     +"beam trigger"+"\n",\
+    #                     font0,transform = ax.transAxes, )
+#     plt.draw()
+#     plt.savefig("./run_%d"%num,dpi=300)
+    plt.show()
