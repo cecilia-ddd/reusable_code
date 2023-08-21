@@ -1,3 +1,10 @@
+import numpy as np
+import matplotlib
+# from collections import Counter
+# from matplotlib.backends.backend_pdf import PdfPages
+import matplotlib.pyplot as plt
+
+
 beam_data_input_windows_dis_FPGA2.sort()
 beam_data_input_windows_dis_FPGA2_counter = Counter(beam_data_input_windows_dis_FPGA2)
 beam_data_input_windows_dis_FPGA2_ele = set(beam_data_input_windows_dis_FPGA2)
@@ -6,11 +13,7 @@ beam_data_input_windows_dis_FPGA2_ele_0.sort()
 
 print(beam_data_input_windows_dis_FPGA2_ele_0)
 
-import numpy as np
-import matplotlib
-# from collections import Counter
-# from matplotlib.backends.backend_pdf import PdfPages
-import matplotlib.pyplot as plt
+
 x = []
 y = []
 # x = [i for i in range(0,64)]
@@ -31,10 +34,6 @@ font0 = {'family' : 'Cabrili',
 'color':'black'
 }
 
-font2 = {'family' : 'Calibri',
-'weight' : 'bold',
-'size'   : 40,
-}
 font3 = {'family' : 'Calibri',
 'weight' : 'normal',
 'size'   : 40,
