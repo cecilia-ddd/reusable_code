@@ -1,0 +1,28 @@
+# 字体包
+font0 = {'family' : 'Cabrili',
+    'weight' : 'normal',
+    'size'   : 22,
+    'color':'black'
+    }#一般用于横纵坐标的标题
+font1 = {'family' : 'Calibri',
+    'weight' : 'normal',
+    'size'   : 40,
+    }#一般用于整个图片的大标题
+font2 = {'family' : 'Calibri',
+    'weight' : 'bold',
+    'size'   : 36,
+    }#用于CMS Muon这种图注
+
+font3 = {'family' : 'Calibri',
+    'weight' : 'normal',
+    'size'   : 36,
+    "style":"italic"
+    } #用于prelimilary斜体
+font4 = {'family' : 'Calibri',
+        'weight' : 'normal',
+        'size'   : 26,
+        "style":"italic"
+    }#文件信息，例如event count
+# 文件信息 几月份的GIF+文件号码+电压+event个数+(tdc个数)+粒子种类+触发方式
+file_infoo = Date+"\n"+N_run+"_7200V_"+str(valid_event_number -1)+"\n"+"Cross talk event count: "+str(event_number)+"\n"\
+            +"Cross talk Petiroc count: "+str(sum(id_cross_talk))+"\n"+"only beam"+"\n"+"beam trigger"+"\n"
