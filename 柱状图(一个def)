@@ -1,0 +1,49 @@
+def create_bar(x: list, y: list, pic_path: str, bar_color: str, file_info):
+    figsize = 16,9
+    figure, ax = plt.subplots(figsize=figsize)
+    #设置坐标轴题目  
+    self_xlabel = "Petiroc Id"
+    self_ylabel = 'Count'#定义y轴
+    plt.xlabel(self_xlabel,horizontalalignment='right',x=1.0,fontdict=font0)
+    plt.ylabel(self_ylabel,horizontalalignment='left',y=0.85,fontdict=font0)
+    #设置坐标范围
+    plt.ylim(0,700)
+#     plt.xlim(-31.5,32.5)
+
+    #设置bar的颜色
+    plt.bar(x,y,align='center',color= bar_color,alpha=1,width=0.45, linewidth=0.5 )
+    #设置坐标轴主刻度副刻度
+    xmajorLocator = MultipleLocator(1)
+    ax.xaxis.set_major_locator(xmajorLocator)
+    ymajorLocator = MultipleLocator(100)  # 将y轴主刻度标签设置为0.05的倍数
+    ax.yaxis.set_major_locator(ymajorLocator)
+#     xminorLocator = MultipleLocator(1)
+#     ax.xaxis.set_minor_locator(xminorLocator)
+    yminorLocator = MultipleLocator(20)
+    ax.yaxis.set_minor_locator(yminorLocator)
+    ax.tick_params(which='major',direction='in',length=18,width=2.0,labelsize=24)
+    ax.tick_params(which='minor',direction='in',length=8,width=2.0)
+    plt.yticks(fontproperties='Calibri', size=20,weight='normal')#设置大小及加粗
+    plt.xticks(fontproperties='Calibri', size=20,weight='normal')#设置大小及加粗
+    #显示网格线
+    plt.grid(ls='--') 
+
+    ax = plt.gca()
+    #图片标题
+    information9 = "The distribution of Petiroc cross talk"
+    plt.title(label=information9,loc="center",fontdict=font1,pad=50)
+    #图注1
+    information0="CMS MUON"
+    information2="Preliminary"
+    information3="GIF++"
+    ax.text(0.01,1.005,information0,font2,transform = ax.transAxes, )
+    ax.text(0.225,1.005,information2,font3,transform = ax.transAxes, )
+    ax.text(0.90,1.005,information3,font2,transform = ax.transAxes, )
+
+    #文件信息
+    ax.text(0.65,0.60,file_info,font4,transform = ax.transAxes, )
+    plt.savefig(pic_path + information9 + N_run ,dpi=100)
+    plt.show()
+    plt.close()
+
+create_bar([0,1,2,3,4,5],id_cross_talk,file_path, 'mediumblue', file_infoo)
