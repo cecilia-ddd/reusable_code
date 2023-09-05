@@ -1,0 +1,20 @@
+Event_empty = 0
+    Event_empty_list = []
+    for obj in event_list[:min(event_num_1000)]:
+        if obj.Event_num not in calibration_BCN_check_beyond_list:
+            item = obj.Link_info_list[0]
+            if item.Num_of_data == 0:
+                Event_empty = Event_empty + 1 
+                Event_empty_list.append(obj.Event_num)
+    print("空的event有几个：",Event_empty)
+#     print(Event_empty_list)            
+                
+    single_event = 0
+    single_event_list = []
+    for obj in event_list[:min(event_num_1000)]:
+        if obj.Event_num not in calibration_BCN_check_beyond_list:
+            item = obj.Link_info_list[0]
+            if item.Num_of_data != 0 and sum(item.Strip_hit_nums) == 0:
+                single_event = single_event + 1
+                single_event_list.append(obj.Event_num)
+    print("只有单端数据的event有几个：",single_event)
