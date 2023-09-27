@@ -1,0 +1,25 @@
+#求gama rate KHz/cm2
+active_area = 10577.5
+# average_rate = 0.73
+# gama_rate = 0
+# gama_rate = (average_rate*2*(math.pow(10, 6)))/(active_area* 25)
+# print(gama_rate)
+
+#求63BX内店里个数
+# gama_rate = 4.8 #KHZ/cm2
+# z = active_area/2 * gama_rate * 1000* 25 * math.pow(10, -9) * 63
+# print(z)
+# print(z/63)
+# #line rate 单位Gb/s
+gama_rate = 4.8 #KHZ/cm2
+muon_rate = 0.12 #KHZ/cm2
+gama_cluster_size = 2
+muon_cluster_size = 3
+gama_line_rate = active_area/2 * gama_rate * 1000 * (gama_cluster_size * 2 / 3) * 120 / math.pow(10, 9)
+muon_line_rate = active_area/2 * muon_rate * 1000 * (muon_cluster_size * 2 / 3) * 120 / math.pow(10, 9)
+print(gama_line_rate)
+print(muon_line_rate)
+print(muon_line_rate + gama_line_rate)
+# #求事例率
+# line_rate = 3.0
+# print(line_rate/(active_area/2 * 1000 * (cluster_size * 2 / 3) * 120 / math.pow(10, 9)))
